@@ -12,7 +12,7 @@ const comments = {};
 
 app.get('/post/:id/comment', (req, res) => {
   const { id } = req.params;
-  res.send(comments[id]);
+  res.send(comments[id] || []);
 });
 
 app.post('/post/:id/comment', (req, res) => {
