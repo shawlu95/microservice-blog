@@ -20,6 +20,11 @@ app.post('/events', (req, res) => {
   } else if (type === 'CommentCreated') {
     const { id, comment, postId, status } = data;
     posts[postId].comments.push({ id, comment, status });
+  } else if (type == 'CommentModerated') {
+    const { id, postId, status } = data;
+    const post = posts[postId];
+    const comment = post.comments.find(comment => comment.id === id);
+    comment.status = status;
   }
   res.send({});
 });
