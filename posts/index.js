@@ -1,9 +1,11 @@
 const express = require('express');
 const parser = require('body-parser');
+const cors = require('cors');
 const { randomBytes } = require('crypto');
 
 const app = express();
 app.use(parser.json());
+app.use(cors());
 
 // store data in memory
 const posts = {};
