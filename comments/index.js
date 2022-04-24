@@ -23,10 +23,10 @@ app.post('/post/:id/comment', async (req, res) => {
     comments[id] = []
   }
   const commentId = randomBytes(4).toString('hex');
-  comments[id].push({ commentId, comment });
+  comments[id].push({ id: commentId, comment });
   await axios.post('http://localhost:4005/events', {
     type: 'CommentCreated',
-    data: { commentId, comment, postId: id }
+    data: { id: commentId, comment, postId: id }
   });
   res.status(201).send(comments[id]);
 });
