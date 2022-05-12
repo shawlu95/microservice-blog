@@ -43,4 +43,20 @@ kubectl logs $pod_name
 kubectl delete pod $pod_name
 kubectl apply -f $config_file
 kubectl describe pod $pod_file
+
+# run deployment
+kubectl apply -f infra/k8s/posts-depl.yaml
+kubectl get deployments
+kubectl get pods
+kubectl delete pod $pod_name
+kubectl describe deployment posts-depl
+
+# all associated pods will be deleted!
+kubectl delete deployment posts-depl
 ```
+
+Update image with kubernetes
+1. Edit file and commit
+2. Build image: `docker build -t shaw/posts:0.0.1 .`
+3. Update image version in deployment config file
+4. Deploy: `kubectl apply -f infra/k8s/posts-depl.yaml`
