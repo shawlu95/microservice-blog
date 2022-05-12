@@ -110,7 +110,7 @@ posts-srv    NodePort    10.97.238.204   <none>        4000:30578/TCP   38s
 2. Push image
 3. Create a deployment for event bus
 4. Create cluster IP service for event bus and posts
-5. Connect the pods
+5. Connect the pods: use the exact name of the cluster IP service
 
 ```bash
 docker build -t shawlu95/event-bus .
@@ -123,4 +123,18 @@ kubectl apply -f infra/k8s/event-bus-depl.yaml
 kubectl apply -f infra/k8s/event-bus-depl.yaml
 kubectl apply -f infra/k8s/posts-depl.yaml 
 kubectl get services
+```
+
+Redeploy after updating the API:
+```bash
+cd event-bus
+docker build -t shawlu95/event-bus . 
+docker push shawlu95/event-bus
+
+cd posts
+docker build -t shawlu95/posts . 
+docker push shawlu95/posts
+
+kubectl rollout restart deployment posts-depl
+kubectl rollout restart deployment event-bus-depl
 ```
