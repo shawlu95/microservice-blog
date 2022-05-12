@@ -70,7 +70,10 @@ If version is not specified in config, use the latest version.
 * don't set suffix, automatically find latex
 
 ```bash
-docker push docker.io/shaw/posts
+docker login
+# Create login ID: https://hub.docker.com
+docker build -t shawlu95/posts .
+docker push docker.io/shawlu95/posts
 kubectl rollout restart deployment posts-depl
 kubectl get deployments
 kubectl get pods
@@ -97,4 +100,22 @@ shaw.lu@main microservice-blog % kubectl get services
 NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
 kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          24h
 posts-srv    NodePort    10.97.238.204   <none>        4000:30578/TCP   38s
+```
+
+#### Cluster IP: How Pods Talk to each other
+* Each Pod has an cluster IP service
+* If a pod wants to talk to another pod, must reach out to its cluster IP service
+
+1. Build an image for event bus
+2. Push image
+3. Create a deployment for event bus
+4. Create cluster IP service for event bus and posts
+5. Connect the pods
+
+```bash
+docker build -t shawlu95/event-bus .
+docker push docker.io/shawlu95/event-bus
+
+# create the depl file
+kubectl apply -f infra/k8s/event-bus-depl.yaml
 ```
