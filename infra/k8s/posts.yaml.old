@@ -5,4 +5,4 @@ metadata:
 spec:
   containers:
     - name: posts
-      image: docker.io/shaw/posts:0.0.1
+      image: docker.io/shaw/posts:latest

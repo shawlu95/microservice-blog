@@ -43,7 +43,10 @@ kubectl logs $pod_name
 kubectl delete pod $pod_name
 kubectl apply -f $config_file
 kubectl describe pod $pod_file
+```
 
+#### Deployment
+```bash
 # run deployment
 kubectl apply -f infra/k8s/posts-depl.yaml
 kubectl get deployments
@@ -60,3 +63,15 @@ Update image with kubernetes
 2. Build image: `docker build -t shaw/posts:0.0.1 .`
 3. Update image version in deployment config file
 4. Deploy: `kubectl apply -f infra/k8s/posts-depl.yaml`
+
+#### Auto-versioning Deploy
+If version is not specified in config, use the latest version.
+* set `:latest` instead of version number
+* don't set suffix, automatically find latex
+
+```bash
+docker push docker.io/shaw/posts
+kubectl rollout restart deployment posts-depl
+kubectl get deployments
+kubectl get pods
+```
