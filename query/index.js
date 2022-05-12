@@ -39,7 +39,7 @@ app.listen(4002, async () => {
   try {
     // pull all events from bus and catch up with the history
     // if an event has already been handled, handle again as if new
-    const res = await axios.get("http://localhost:4005/events");
+    const res = await axios.get("http://event-bus-srv:4005/events");
     for (let event of res.data) {
       console.log("Processing event:", event.type);
       handleEvent(event.type, event.data);
