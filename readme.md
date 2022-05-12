@@ -118,4 +118,9 @@ docker push docker.io/shawlu95/event-bus
 
 # create the depl file
 kubectl apply -f infra/k8s/event-bus-depl.yaml
+
+# add cluster IP services to the depl files
+kubectl apply -f infra/k8s/event-bus-depl.yaml
+kubectl apply -f infra/k8s/posts-depl.yaml 
+kubectl get services
 ```
