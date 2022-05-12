@@ -75,3 +75,26 @@ kubectl rollout restart deployment posts-depl
 kubectl get deployments
 kubectl get pods
 ```
+
+#### Communication
+1. Cluster IP: expose inter-pod communication. Assign readable URL to pod.
+2. Node port: accessible to dev only.
+3. Load balancer: expose to users browsers.
+4. External name: redirect an in-cluster request to a CNAME url. v
+
+```bash
+kubectl apply -f infra/k8s/posts-srv.yaml 
+kubectl get services
+kubectl describe services
+kubectl delete services posts-srv
+```
+
+How port works
+* 30578: Node port. Randomly assigned, used to access from the outside
+* Access the service: `localhost:30578/post`
+```bash
+shaw.lu@main microservice-blog % kubectl get services
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          24h
+posts-srv    NodePort    10.97.238.204   <none>        4000:30578/TCP   38s
+```
