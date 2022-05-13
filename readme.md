@@ -159,6 +159,13 @@ Practice with *Nginx Ingress*
 
 Host File
 * Add one line to trick local computer to reach a pod instead of a remote host
-* mac: `etc/hosts`
+* mac: `/etc/hosts`
 * windows: `C:\Wubdiws\Systen32\Drivers\etc\gist`
 * then can access pod like "posts.com/post"
+
+___
+### Scaffold
+* A tool that runs outside of k8s cluster
+* Install on Mac: `brew install skaffold`
+* create [scaffold](./infra/k8s/scaffold.yaml)
+* Start in project root: `scaffold dev`
