@@ -138,3 +138,26 @@ docker push shawlu95/posts
 kubectl rollout restart deployment posts-depl
 kubectl rollout restart deployment event-bus-depl
 ```
+
+___
+### Load Balancer
+* Load balancer service: 
+  - reach out to cloud provider (e.g. Google Cloud, aws)
+  - provisions a load balancer to handle traffic
+  - load balancer exists outside of kubernetes cluster
+  - direct incoming traffic to ingress controller which routes to pods  
+* front end app
+  - doesn't need to know the service name
+  - send request to the load balancer
+* ingress controller
+  - a pod with a set of routing rules to distribuet traffic to other services
+
+Practice with *Nginx Ingress*
+* default namespace: `ingress-nginx`
+* check ports: `sudo lsof -i tcp:80`
+
+Host File
+* Add one line to trick local computer to reach a pod instead of a remote host
+* mac: `etc/hosts`
+* windows: `C:\Wubdiws\Systen32\Drivers\etc\gist`
+* then can access pod like "posts.com/post"
