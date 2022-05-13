@@ -23,8 +23,7 @@ metadata:
 spec:
   selector:
     app: comments
-  type: ClusterIP # default type, can be omitted
-  ports: 
+  ports:
     - name: comments
       protocol: TCP
       port: 4001

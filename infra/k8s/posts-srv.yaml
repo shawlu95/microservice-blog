@@ -5,10 +5,9 @@ metadata:
 spec:
   type: NodePort
   selector:
-    # find all pods with name "posts" to create the node port
     app: posts
   ports:
     - name: posts
       protocol: TCP
-      port: 4000 # port of the node port service
-      targetPort: 4000 # ultimate port on pod(container)
+      port: 4000
+      targetPort: 4000

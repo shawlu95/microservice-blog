@@ -15,17 +15,15 @@ spec:
       containers:
         - name: posts
           image: shawlu95/posts
-          
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: posts-clusterip-srv # should be unique
+  name: posts-clusterip-srv
 spec:
   selector:
     app: posts
-  type: ClusterIP # default type, can be omitted
-  ports: 
+  ports:
     - name: posts
       protocol: TCP
       port: 4000

@@ -23,8 +23,7 @@ metadata:
 spec:
   selector:
     app: moderation
-  type: ClusterIP # default type, can be omitted
-  ports: 
+  ports:
     - name: moderation
       protocol: TCP
       port: 4003
