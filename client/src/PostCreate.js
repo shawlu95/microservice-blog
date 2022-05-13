@@ -5,7 +5,7 @@ const PostCreate = () => {
   const [title, setTitle] = useState('');
   const submit = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:4000/post', {
+    await axios.post('http://posts.com/post', {
       title
     });
     setTitle('');
