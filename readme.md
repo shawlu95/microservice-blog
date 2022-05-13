@@ -151,6 +151,7 @@ ___
   - send request to the load balancer
 * ingress controller
   - a pod with a set of routing rules to distribuet traffic to other services
+  - route must be unique, get and post requests can't share same path
 
 Practice with *Nginx Ingress*
 * default namespace: `ingress-nginx`
