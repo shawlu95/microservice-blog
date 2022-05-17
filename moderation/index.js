@@ -8,7 +8,7 @@ app.use(parser.json());
 const handleEvent = async (type, data) => {
   console.log("Received event", type, data);
   if (type === 'CommentCreated') {
-    const status = data.comment.includes('fuck') ? 'rejected' : 'approved';
+    const status = data.content.includes('fuck') ? 'rejected' : 'approved';
     await axios.post('http://event-bus-srv:4005/events', {
       type: 'CommentModerated',
       data: { ...data, status }

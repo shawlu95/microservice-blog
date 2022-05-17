@@ -10,7 +10,7 @@ spec:
     - host: posts.com
       http:
         paths:
-          - path: /post/create
+          - path: /posts/create
             pathType: Prefix
             backend:
               service:

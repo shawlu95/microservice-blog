@@ -18,8 +18,8 @@ const handleEvent = (type, data) => {
     const { id, title } = data;
     posts[id] = { id, title, comments: [] };
   } else if (type === 'CommentCreated') {
-    const { id, comment, postId, status } = data;
-    posts[postId].comments.push({ id, comment, status });
+    const { id, content, postId, status } = data;
+    posts[postId].comments.push({ id, content, status });
   } else if (type == 'CommentModerated') {
     const { id, postId, status } = data;
     const post = posts[postId];
