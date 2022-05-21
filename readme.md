@@ -18,12 +18,14 @@ docker logs $container_id
 ```
 
 ### Kubernetes
+
 A cluster contains many nodes. Each node is a virtual machine.
-* One cluster has one master
-* A VM can contains one more more pods
-* A pod is analogous to a container.
-* **service** allows networking of running pod (not the same as microservice)
-* **deployment** monitors a set od pods, restart when creash etc
+
+- One cluster has one master
+- A VM can contains one more more pods
+- A pod is analogous to a container.
+- **service** allows networking of running pod (not the same as microservice)
+- **deployment** monitors a set od pods, restart when creash etc
 
 ```bash
 # Useful alias
@@ -46,6 +48,7 @@ kubectl describe pod $pod_file
 ```
 
 #### Deployment
+
 ```bash
 # run deployment
 kubectl apply -f infra/k8s/posts-depl.yaml
@@ -56,18 +59,26 @@ kubectl describe deployment posts-depl
 
 # all associated pods will be deleted!
 kubectl delete deployment posts-depl
+
+# delete all
+kubectl delete --all deployments --namespace=ingress-nginx
+kubectl delete --all pods --namespace=ingress-nginx
+kubectl delete --all services --namespace=ingress-nginx
 ```
 
 Update image with kubernetes
+
 1. Edit file and commit
 2. Build image: `docker build -t shaw/posts:0.0.1 .`
 3. Update image version in deployment config file
 4. Deploy: `kubectl apply -f infra/k8s/posts-depl.yaml`
 
 #### Auto-versioning Deploy
+
 If version is not specified in config, use the latest version.
-* set `:latest` instead of version number
-* don't set suffix, automatically find latex
+
+- set `:latest` instead of version number
+- don't set suffix, automatically find latex
 
 ```bash
 docker login
@@ -80,21 +91,24 @@ kubectl get pods
 ```
 
 #### Communication
+
 1. Cluster IP: expose inter-pod communication. Assign readable URL to pod.
 2. Node port: accessible to dev only.
 3. Load balancer: expose to users browsers.
 4. External name: redirect an in-cluster request to a CNAME url. v
 
 ```bash
-kubectl apply -f infra/k8s/posts-srv.yaml 
+kubectl apply -f infra/k8s/posts-srv.yaml
 kubectl get services
 kubectl describe services
 kubectl delete services posts-srv
 ```
 
 How port works
-* 30578: Node port. Randomly assigned, used to access from the outside
-* Access the service: `localhost:30578/post`
+
+- 30578: Node port. Randomly assigned, used to access from the outside
+- Access the service: `localhost:30578/post`
+
 ```bash
 shaw.lu@main microservice-blog % kubectl get services
 NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
@@ -103,8 +117,9 @@ posts-srv    NodePort    10.97.238.204   <none>        4000:30578/TCP   38s
 ```
 
 #### Cluster IP: How Pods Talk to each other
-* Each Pod has an cluster IP service
-* If a pod wants to talk to another pod, must reach out to its cluster IP service
+
+- Each Pod has an cluster IP service
+- If a pod wants to talk to another pod, must reach out to its cluster IP service
 
 1. Build an image for event bus
 2. Push image
@@ -121,51 +136,58 @@ kubectl apply -f infra/k8s/event-bus-depl.yaml
 
 # add cluster IP services to the depl files
 kubectl apply -f infra/k8s/event-bus-depl.yaml
-kubectl apply -f infra/k8s/posts-depl.yaml 
+kubectl apply -f infra/k8s/posts-depl.yaml
 kubectl get services
 ```
 
 Redeploy after updating the API:
+
 ```bash
 cd event-bus
-docker build -t shawlu95/event-bus . 
+docker build -t shawlu95/event-bus .
 docker push shawlu95/event-bus
 
 cd posts
-docker build -t shawlu95/posts . 
+docker build -t shawlu95/posts .
 docker push shawlu95/posts
 
 kubectl rollout restart deployment posts-depl
 kubectl rollout restart deployment event-bus-depl
 ```
 
-___
+---
+
 ### Load Balancer
-* Load balancer service: 
+
+- Load balancer service:
   - reach out to cloud provider (e.g. Google Cloud, aws)
   - provisions a load balancer to handle traffic
   - load balancer exists outside of kubernetes cluster
-  - direct incoming traffic to ingress controller which routes to pods  
-* front end app
+  - direct incoming traffic to ingress controller which routes to pods
+- front end app
   - doesn't need to know the service name
   - send request to the load balancer
-* ingress controller
+- ingress controller
   - a pod with a set of routing rules to distribuet traffic to other services
   - route must be unique, get and post requests can't share same path
 
-Practice with *Nginx Ingress*
-* default namespace: `ingress-nginx`
-* check ports: `sudo lsof -i tcp:80`
+Practice with _Nginx Ingress_
+
+- default namespace: `ingress-nginx`
+- check ports: `sudo lsof -i tcp:80`
 
 Host File
-* Add one line to trick local computer to reach a pod instead of a remote host
-* mac: `/etc/hosts`
-* windows: `C:\Wubdiws\Systen32\Drivers\etc\gist`
-* then can access pod like "posts.com/post"
 
-___
-### Scaffold
-* A tool that runs outside of k8s cluster
-* Install on Mac: `brew install skaffold`
-* create [scaffold](./infra/k8s/scaffold.yaml)
-* Start in project root: `scaffold dev`
+- Add one line to trick local computer to reach a pod instead of a remote host
+- mac: `/etc/hosts`
+- windows: `C:\Wubdiws\Systen32\Drivers\etc\gist`
+- then can access pod like "posts.com/post"
+
+---
+
+### skaffold
+
+- A tool that runs outside of k8s cluster
+- Install on Mac: `brew install skaffold`
+- create [skaffold](./infra/k8s/skaffold.yaml)
+- Start in project root: `skaffold dev`
