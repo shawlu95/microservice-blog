@@ -60,6 +60,9 @@ kubectl describe deployment posts-depl
 # all associated pods will be deleted!
 kubectl delete deployment posts-depl
 
+# get all namespace
+kubectl get namespace
+
 # delete all
 kubectl delete --all deployments --namespace=ingress-nginx
 kubectl delete --all pods --namespace=ingress-nginx
